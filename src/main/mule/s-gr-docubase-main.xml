@@ -10,7 +10,7 @@
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="router-config-s-gr-docubase" />
+        <apikit:router config-ref="s-gr-docubase-config" />
     </flow>
     <flow name="s-gr-docubase-console">
         <http:listener path="/console/*" config-ref="http-listener-config-s-gr-docubase">
@@ -22,7 +22,7 @@
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:console config-ref="router-config-s-gr-docubase" />
+        <apikit:console config-ref="s-gr-docubase-config" />
     </flow>
     <flow name="get:\api-status:s-gr-docubase-config" doc:id="b998ac46-9589-4750-9815-257001850457">
         <ee:transform doc:name="Transform Message" doc:id="83ed7cf8-c4c6-43cb-95db-6ffb6f93e6d4" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
