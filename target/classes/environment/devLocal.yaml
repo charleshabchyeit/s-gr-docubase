@@ -7,21 +7,10 @@ api:
   name: "${application.name}-${environment.name}"
   id: "329996"
   version: "v1"
-  
-# Common properties
-common:
-  audit:
-    role:
-      logStart: "true"
-      logEnd: "true"
-      logInfo: "true"
-      logWarning: "true"
-      logError: "true"
-      logDebug: "true"
-    defaultLogPayloadLogic: "ALWAYS"
     
 http:
-  port: "8084"
+  private:
+    port: "8084"
   timeout: "99999999"
   listener:
     path: "/api/${api.name}/${api.version}/*"
@@ -45,5 +34,16 @@ config:
       getTag: "/tag"
       getTree: "/wsrheaurl/cxf/wsu?wsdl"
       patchDocument: "/basemanager/domain/1/base/GARANCE/document/1/tag"
-   
+
+# Common properties
+common:
+  audit:
+    role:
+      logStart: "true"
+      logEnd: "true"
+      logInfo: "true"
+      logWarning: "true"
+      logError: "true"
+      logDebug: "true"
+    defaultLogPayloadLogic: "ALWAYS"
   
