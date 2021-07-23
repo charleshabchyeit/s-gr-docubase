@@ -44,12 +44,6 @@ output application/java
 			doc:id="89f133a9-5e03-4f18-858e-ebe063eb4c63"
 			config-ref="http-request-config-docubase"
 			path="#['${config.docubase.endpoint.getDocument}']">
-			<http:headers><![CDATA[#[output application/java
----
-{
-	client_secret : 11,
-	client_id : 11
-}]]]></http:headers>
 			<http:query-params><![CDATA[#[payload]]]></http:query-params>
 		</http:request>
 		<ee:transform doc:name="Set Log Configuration"
@@ -97,9 +91,7 @@ output application/java
 			<http:headers ><![CDATA[#[output application/json
 ---
 {
-	//"X-db-connectAs" : attributes.headers.'X-db-connectAs'
-	"X-db-connectAs" : "chabchy"
-	
+	"X-db-connectAs" : attributes.headers.'X-db-connectAs'	
 }]]]></http:headers>
 		</http:request>
 		<ee:transform doc:name="Set Log Configuration" doc:id="6615267a-748f-40f8-bae5-e4b0e1199847" >
@@ -211,7 +203,9 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="e3efb57d-5604-43d9-8777-8c3478268394" name="mule-common-logger-subflow" />
-		<file:read doc:id="e18998f6-4cd1-45d7-9a72-2ebcc6ac93db" config-ref="File_Config" path="C:\Users\nancy.kalach\Desktop\Tessi\GARANCE-Salesforce-UUID-20210607_10H03.csv" outputMimeType='application/csv; lineseparator=";\\n"; separator=";"; header=true' outputEncoding='#["Cp1252"]' doc:name="Read" />
+		<file:list doc:name="List" doc:id="b614b65a-7452-4fa0-8c58-1d89d03fce19" directoryPath="C:\Users\charles.habchy.EITECH\Desktop\tmp"/>
+		<set-variable value="#[payload[0].typedAttributes.name]" doc:name="File Name" doc:id="28cd4d98-f317-444b-9bce-4a4a6857bfec" variableName="fileName"/>
+		<file:read doc:id="e18998f6-4cd1-45d7-9a72-2ebcc6ac93db" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]' doc:name="Read" path="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ vars.fileName]"/>
 		<ee:transform doc:name="Set Log Configuration" doc:id="fd7af66a-b4f8-4b99-8e40-714416fda9e8" >
 			<ee:message />
 			<ee:variables >
