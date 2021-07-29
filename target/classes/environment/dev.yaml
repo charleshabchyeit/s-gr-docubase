@@ -26,13 +26,16 @@ config:
     timeout: "999999999"
     username: "svc_api_docu"
     password: "${secure::passwords.docubasePass}"
-    pass: "12&amp;2021Gar#"
     path:
       baseURI: "serviceweb/rest/api/usersession"
     endpoint: 
       getDocument: "/basemanager/domain/1/base/GARANCE/document"
       getTag: "/tag"
       getTree: "/wsrheaurl/cxf/wsu?wsdl"
+  sftp:
+    host: "GRCSWPFIC100"
+    username: "mulesoft"
+    password: "${secure::passwords.sftp}"
   
 # Common properties
 common:

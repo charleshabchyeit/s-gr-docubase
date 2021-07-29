@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule
+<mulexmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	
 	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
 	xmlns:file="http://www.mulesoft.org/schema/mule/file"
 	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
@@ -10,6 +11,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
@@ -26,8 +28,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		doc:id="bfbe34bd-6afb-42ae-a006-60736bd4ac2b"
 		basePath="/${config.docubase.path.baseURI}">
 		<http:request-connection
-			protocol="${config.docubase.protocol}" host="${config.docubase.host}"
-			connectionIdleTimeout="${config.docubase.timeout}">
+			protocol="${config.docubase.protocol}" host="${config.docubase.host}">
 			<http:authentication>
 				<http:basic-authentication
 					username="${config.docubase.username}"
@@ -82,14 +83,18 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		doc:name="HTTP Request configuration"
 		doc:id="4e496420-36c0-4366-9996-2c13b3d21db3">
 		<http:request-connection
-			protocol="${config.docubase.protocol}" host="${config.docubase.host}"
-			connectionIdleTimeout="${config.docubase.timeout}" />
+			protocol="${config.docubase.protocol}" host="${config.docubase.host}"/>
 	</http:request-config>
 	<http:listener-config
 		name="http-listener-config-s-gr-docubase">
 		<http:listener-connection host="0.0.0.0"
 			port="${http.private.port}" connectionIdleTimeout="${http.timeout}" />
 	</http:listener-config>
+	
+	<sftp:config name="SFTP_Config" doc:name="SFTP Config" doc:id="447a75f9-c863-40ea-a2d0-7039c1c49a55" >
+		<sftp:connection host="${config.sftp.host}" username="${config.sftp.username}" password="${config.sftp.password}" />
+	</sftp:config>
+	
 <!-- 	<api-gateway:autodiscovery apiId="${api.id}" -->
 <!-- 		ignoreBasePath="true" doc:name="API Autodiscovery" -->
 <!-- 		doc:id="d2b70ccd-78a6-4377-8d87-4ed9c4f2e4bc" -->

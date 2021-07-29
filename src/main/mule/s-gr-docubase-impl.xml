@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+<mule xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd">
 	
 	<flow
 		name="get:\searchDocument\(index)\(value):s-gr-docubase-config">
@@ -141,7 +142,7 @@ write( (readUrl("classpath://getGEDIDInRheaFormEncryptedURLBody", "text/plain"))
 with attributes.queryParams.'category', "text/plain") replace "VariableY" 
 with attributes.queryParams.'value' replace "variableUsername" 
 with '${config.docubase.username}' replace "variablePassword" 
-with '${config.docubase.pass}']]></ee:set-payload>
+with '${config.docubase.password}']]></ee:set-payload>
 			</ee:message>
 			<ee:variables />
 		</ee:transform>
@@ -184,14 +185,14 @@ output application/java
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="38c8a60e-e725-46e3-95b6-a5466bbc14f6" name="mule-common-logger-subflow" />
 	</flow>
-	<flow name="get:\file:s-gr-docubase-config" doc:id="2dd3a1cd-1759-4ec2-a757-0c01a89a4ca2" >
+	<flow name="get:\list:s-gr-docubase-config" doc:id="2dd3a1cd-1759-4ec2-a757-0c01a89a4ca2" >
 		<ee:transform doc:name="Set Log Configuration" doc:id="27406f0f-a50f-4996-961d-b1cc908e61ef" >
 			<ee:message />
 			<ee:variables >
 				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
 output application/java
 ---
-'System - Docubase - Get Files SFTP - Start']]></ee:set-variable>
+'System - Docubase - List files SFTP - Start']]></ee:set-variable>
 				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
 output application/java
 ---
@@ -203,16 +204,25 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="e3efb57d-5604-43d9-8777-8c3478268394" name="mule-common-logger-subflow" />
-		<file:list doc:name="List" doc:id="b614b65a-7452-4fa0-8c58-1d89d03fce19" directoryPath="C:\Users\charles.habchy.EITECH\Desktop\tmp"/>
-		<set-variable value="#[payload[0].typedAttributes.name]" doc:name="File Name" doc:id="28cd4d98-f317-444b-9bce-4a4a6857bfec" variableName="fileName"/>
-		<file:read doc:id="e18998f6-4cd1-45d7-9a72-2ebcc6ac93db" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]' doc:name="Read" path="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ vars.fileName]"/>
+		<sftp:list doc:name="List" doc:id="59a78d60-fe35-4f1f-99f8-452ad37d86a7" config-ref="SFTP_Config" directoryPath="Tessi_Recette"/>
+<!-- 		<file:list doc:name="List" doc:id="b04fffe7-b288-44c5-8a5b-a1fbb860a7f7" directoryPath="C:\Users\charles.habchy.EITECH\Desktop\tmp"/> -->
+		<ee:transform doc:name="List Files" doc:id="bb44a346-76f6-4611-8df7-bc3bad7f3334" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map (item,index) -> {
+ 	fileName: item.typedAttributes.name
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<ee:transform doc:name="Set Log Configuration" doc:id="fd7af66a-b4f8-4b99-8e40-714416fda9e8" >
 			<ee:message />
 			<ee:variables >
 				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
 output application/java
 ---
-'System - Docubase - Get Files SFTP - Finish']]></ee:set-variable>
+'System - Docubase - List files SFTP - Finish']]></ee:set-variable>
 				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
 output application/java
 ---
@@ -225,4 +235,83 @@ output application/java
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="e0394c10-3062-47de-b6b0-13399d370c05" name="mule-common-logger-subflow" />
 	</flow>
+	<flow name="get:\read:s-gr-docubase-config">
+		<ee:transform doc:name="Set Log Configuration" doc:id="7e830993-d8c9-4fd6-9d4a-ee6ee6007804" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+'System - Docubase - Read file SFTP - Start']]></ee:set-variable>
+				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+'Trace']]></ee:set-variable>
+				<ee:set-variable variableName="logLevel" ><![CDATA[%dw 2.0
+output application/java
+---
+'INFO']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="mule-common-logger-subflow" doc:id="1e957c81-4d57-4538-918b-d83b2cbdd972" name="mule-common-logger-subflow" />
+		<sftp:read doc:name="Read" doc:id="87e3103b-9a5b-4157-a3a7-0ccf80c83ecd" config-ref="SFTP_Config" path="#['Tessi_Recette\\' ++ attributes.queryParams.fileName]" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]'/>
+<!-- 		<file:read doc:name="Read" doc:id="1b572a9c-52bd-41a6-abba-23b1d42c2d42" path="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ attributes.queryParams.fileName]" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]' /> -->
+		<ee:transform doc:name="Set Log Configuration" doc:id="5dd670da-4b30-4e38-b67a-ced86b66906a" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+'System - Docubase - Read file SFTP - Finish']]></ee:set-variable>
+				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+'Trace']]></ee:set-variable>
+				<ee:set-variable variableName="logLevel" ><![CDATA[%dw 2.0
+output application/java
+---
+'INFO']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="mule-common-logger-subflow" doc:id="44cd4d6c-bebd-49a9-b8bb-56835bd8bc70" name="mule-common-logger-subflow" />
+    </flow>
+    <flow name="get:\move:s-gr-docubase-config">
+		<ee:transform doc:name="Set Log Configuration" doc:id="1d8f59a2-89e6-44d9-8512-41c527924f40" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+'System - Docubase - Move file SFTP - Start']]></ee:set-variable>
+				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+'Trace']]></ee:set-variable>
+				<ee:set-variable variableName="logLevel" ><![CDATA[%dw 2.0
+output application/java
+---
+'INFO']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="mule-common-logger-subflow" doc:id="4de2c6d2-83a0-42a5-bd64-4e161bff543f" name="mule-common-logger-subflow" />
+		<sftp:move doc:name="Move" doc:id="141bca20-3715-42ba-951b-97116db792df" config-ref="SFTP_Config" sourcePath="#['Tessi_Recette\\' ++ payload]" targetPath="#['Archive']"/>
+		<ee:transform doc:name="Set Log Configuration" doc:id="15739847-41dc-4273-8132-5da845c7799b" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="logMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+'System - Docubase - Move file SFTP - Finish']]></ee:set-variable>
+				<ee:set-variable variableName="logCategory" ><![CDATA[%dw 2.0
+output application/java
+---
+'Trace']]></ee:set-variable>
+				<ee:set-variable variableName="logLevel" ><![CDATA[%dw 2.0
+output application/java
+---
+'INFO']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="mule-common-logger-subflow" doc:id="56f87093-54e2-4dd7-8eac-9502578e7e00" name="mule-common-logger-subflow" />
+    </flow>
 </mule>
