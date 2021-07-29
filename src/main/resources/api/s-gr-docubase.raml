@@ -70,7 +70,23 @@ traits:
               examples: !include examples/Document/post-document.raml
               type: dtdocument.postDocument
 
-/file:
+/list:
+    is: [client-id-secret-required] 
+    type:
+      rt.read-only-resource-type:
+        getResponseExamples: 
+          Example 1:
+        getResponseType: 
+
+/read:
+    is: [client-id-secret-required] 
+    type:
+      rt.read-only-resource-type:
+        getResponseExamples: 
+          Example 1:
+        getResponseType: 
+
+/move:
     is: [client-id-secret-required] 
     type:
       rt.read-only-resource-type:
