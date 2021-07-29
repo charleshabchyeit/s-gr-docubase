@@ -5,23 +5,12 @@ environment:
   
 api:
   name: "${application.name}-${environment.name}"
-  id: "329996"
+  id: "795538"
   version: "v1"
-  
-# Common properties
-common:
-  audit:
-    role:
-      logStart: "true"
-      logEnd: "true"
-      logInfo: "true"
-      logWarning: "true"
-      logError: "true"
-      logDebug: "true"
-    defaultLogPayloadLogic: "ALWAYS"
     
 http:
-  port: "8084"
+  private:
+    port: "8084"
   timeout: "99999999"
   listener:
     path: "/api/${api.name}/${api.version}/*"
@@ -37,7 +26,6 @@ config:
     timeout: "999999999"
     username: "svc_api_docu"
     password: "${secure::passwords.docubasePass}"
-    pass: "12&amp;2021Gar#"
     path:
       baseURI: "serviceweb/rest/api/usersession"
     endpoint: 
@@ -45,5 +33,20 @@ config:
       getTag: "/tag"
       getTree: "/wsrheaurl/cxf/wsu?wsdl"
       patchDocument: "/basemanager/domain/1/base/GARANCE/document/1/tag"
-   
+  sftp:
+    host: "GRCSWPFIC100"
+    username: "mulesoft"
+    password: "${secure::passwords.sftp}"
+    
+# Common properties
+common:
+  audit:
+    role:
+      logStart: "true"
+      logEnd: "true"
+      logInfo: "true"
+      logWarning: "true"
+      logError: "true"
+      logDebug: "true"
+    defaultLogPayloadLogic: "ALWAYS"
   
