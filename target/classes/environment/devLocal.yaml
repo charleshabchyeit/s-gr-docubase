@@ -25,7 +25,8 @@ config:
     protocol: "HTTPS"
     timeout: "999999999"
     username: "svc_api_docu"
-    password: "${secure::passwords.docubasePass}"
+    SoapPassword: "${secure::passwords.docubasePass}"
+    password: "12&2021Gar#"
     path:
       baseURI: "serviceweb/rest/api/usersession"
     endpoint: 

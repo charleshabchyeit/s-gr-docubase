@@ -10,7 +10,7 @@ api:
     
 http:
   private:
-    port: "8091"
+    port: "8084"
   timeout: "99999999"
   listener:
     path: "/api/${api.name}/${api.version}/*"
@@ -33,12 +33,13 @@ config:
       getDocument: "/basemanager/domain/1/base/GARANCE/document"
       getTag: "/tag"
       getTree: "/wsrheaurl/cxf/wsu?wsdl"
+      patchDocument: "/basemanager/domain/1/base/GARANCE/document/1/tag"
   sftp:
     host: "90.85.48.77"
     port: "2222"
     username: "garance_salesforce_r"
     password: "${secure::passwords.sftp}"
-  
+    
 # Common properties
 common:
   audit:
@@ -49,5 +50,5 @@ common:
       logWarning: "true"
       logError: "true"
       logDebug: "true"
-    defaultLogPayloadLogic: "ALWAYS"   
+    defaultLogPayloadLogic: "ALWAYS"
   
