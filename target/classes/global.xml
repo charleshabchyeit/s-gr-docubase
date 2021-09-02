@@ -71,7 +71,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	</secure-properties:config>
 	<global-property doc:name="Global Property"
 		doc:id="269ef934-0eb1-465d-abd7-481430175f55" name="mule.securefile"
-		value="dev-secure" />
+		value="test-secure" />
 	<configuration-properties
 		doc:name="Configuration properties"
 		doc:id="b2b5ca5e-b2ea-45ae-a473-e96fc973a042"
