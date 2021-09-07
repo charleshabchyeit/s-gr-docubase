@@ -142,7 +142,7 @@ write( (readUrl("classpath://getGEDIDInRheaFormEncryptedURLBody", "text/plain"))
 with attributes.queryParams.'category', "text/plain") replace "VariableY" 
 with attributes.queryParams.'value' replace "variableUsername" 
 with '${config.docubase.username}' replace "variablePassword" 
-with '${config.docubase.password}']]></ee:set-payload>
+with '${config.docubase.SoapPassword}']]></ee:set-payload>
 			</ee:message>
 			<ee:variables />
 		</ee:transform>
@@ -204,7 +204,7 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="e3efb57d-5604-43d9-8777-8c3478268394" name="mule-common-logger-subflow" />
-		<sftp:list doc:name="List" doc:id="59a78d60-fe35-4f1f-99f8-452ad37d86a7" config-ref="SFTP_Config" directoryPath="Tessi_Recette"/>
+		<sftp:list doc:name="List" doc:id="59a78d60-fe35-4f1f-99f8-452ad37d86a7" config-ref="SFTP_Config" directoryPath="out/rec/salesforce"/>
 <!-- 		<file:list doc:name="List" doc:id="b04fffe7-b288-44c5-8a5b-a1fbb860a7f7" directoryPath="C:\Users\charles.habchy.EITECH\Desktop\tmp"/> -->
 		<ee:transform doc:name="List Files" doc:id="bb44a346-76f6-4611-8df7-bc3bad7f3334" >
 			<ee:message >
@@ -255,7 +255,7 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="1e957c81-4d57-4538-918b-d83b2cbdd972" name="mule-common-logger-subflow" />
-		<sftp:read doc:name="Read" doc:id="87e3103b-9a5b-4157-a3a7-0ccf80c83ecd" config-ref="SFTP_Config" path="#['Tessi_Recette\\' ++ attributes.queryParams.fileName]" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]'/>
+		<sftp:read doc:name="Read" doc:id="87e3103b-9a5b-4157-a3a7-0ccf80c83ecd" config-ref="SFTP_Config" path="#['out\\rec\\salesforce\\' ++ attributes.queryParams.fileName]" outputMimeType='application/csv; header=true; lineseparator=";\\n"; separator=";"' outputEncoding='#["Cp1252"]'/>
 <!-- 		<file:read doc:name="Read" doc:id="1b572a9c-52bd-41a6-abba-23b1d42c2d42" path="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ attributes.queryParams.fileName]"/> -->
 		<ee:transform doc:name="Set Log Configuration" doc:id="5dd670da-4b30-4e38-b67a-ced86b66906a" >
 			<ee:message />
@@ -295,8 +295,9 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="mule-common-logger-subflow" doc:id="4de2c6d2-83a0-42a5-bd64-4e161bff543f" name="mule-common-logger-subflow" />
-<!-- 		<file:move doc:name="Move" doc:id="a1e6cd4f-c42a-439e-97ea-e5e73c56158a" sourcePath="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ attributes.queryParams.fileName]" targetPath="C:\Users\charles.habchy.EITECH\Desktop\archive"/> -->
-		<sftp:move doc:name="Move" doc:id="141bca20-3715-42ba-951b-97116db792df" config-ref="SFTP_Config" sourcePath="#['Tessi_Recette\\' ++ payload]" targetPath="#['Archive']"/>
+		<set-variable value='#[%dw 2.0&#10;output application/json&#10;---&#10;now() as String {format: "yyyy-MM-dd"}]' doc:name="System Date" doc:id="d41fdfbe-884e-4e92-8b0c-61f5394fe587" variableName="systemDate"/>
+<!-- 		<file:move doc:name="Move" doc:id="a1e6cd4f-c42a-439e-97ea-e5e73c56158a" sourcePath="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\tmp\\' ++ attributes.queryParams.fileName]" targetPath="#['C:\\Users\\charles.habchy.EITECH\\Desktop\\archive\\' ++ vars.systemDate]" overwrite="true"/> -->
+		<sftp:move doc:name="Move" doc:id="141bca20-3715-42ba-951b-97116db792df" config-ref="SFTP_Config" sourcePath="#['out\\rec\\salesforce\\' ++ payload]" targetPath="#['out\\rec\\archive\\' ++ vars.systemDate]" overwrite="true"/>
 		<ee:transform doc:name="Set Log Configuration" doc:id="15739847-41dc-4273-8132-5da845c7799b" >
 			<ee:message />
 			<ee:variables >
