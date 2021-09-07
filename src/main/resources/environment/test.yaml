@@ -1,13 +1,53 @@
+# Environment specific properties
 environment:
- name: "![TYx63+PckT5A0h9oA9gWYQ==]"
-application:
- name: "Mule 4 Template API"
+ name: "test"
+# id: 998c26e2-3774-4ef5-b71b-dff93879263b
+  
 api:
- name: "mule-4-template-api-${secure::environment.name}"
- id: "15688395"
- version: "v1"
- http:
+  name: "${application.name}-${environment.name}"
+  id: "875579"
+  version: "v1"
+    
+http:
+  private:
+    port: "8091"
+  timeout: "99999999"
   listener:
-   path: "/api/${api.name}/${api.version}/*"
-   host: "0.0.0.0"
-   port: "8081"
+    path: "/api/${api.name}/${api.version}/*"
+
+https:
+  listener:
+    path: "/api/${api.name}/${api.version}/*"
+    
+config:
+  docubase:
+    host: "rct-docubase-garance.tessitechno.fr"
+    protocol: "HTTPS"
+    timeout: "999999999"
+    username: "svc_api_docu"
+    SoapPassword: "${secure::passwords.docubasePass}"
+    password: "${secure::passwords.password}"
+    path:
+      baseURI: "serviceweb/rest/api/usersession"
+    endpoint: 
+      getDocument: "/basemanager/domain/1/base/GARANCE/document"
+      getTag: "/tag"
+      getTree: "/wsrheaurl/cxf/wsu?wsdl"
+  sftp:
+    host: "90.85.48.77"
+    port: "2222"
+    username: "garance_salesforce_r"
+    password: "${secure::passwords.sftp}"
+  
+# Common properties
+common:
+  audit:
+    role:
+      logStart: "true"
+      logEnd: "true"
+      logInfo: "true"
+      logWarning: "true"
+      logError: "true"
+      logDebug: "true"
+    defaultLogPayloadLogic: "ALWAYS"   
+  

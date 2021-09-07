@@ -1,11 +1,11 @@
 # Environment specific properties
 environment:
- name: "dev"
+ name: "test"
 # id: 998c26e2-3774-4ef5-b71b-dff93879263b
   
 api:
   name: "${application.name}-${environment.name}"
-  id: "795538"
+  id: "875579"
   version: "v1"
     
 http:
@@ -27,6 +27,7 @@ config:
     username: "svc_api_docu"
     SoapPassword: "${secure::passwords.docubasePass}"
     password: "${secure::passwords.password}"
+    
     path:
       baseURI: "serviceweb/rest/api/usersession"
     endpoint: 

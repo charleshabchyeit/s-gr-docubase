@@ -57,7 +57,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		file="common/error/global-error.xml" />
 	<global-property doc:name="Global Property"
 		doc:id="6aaab65a-036b-44b6-9058-f396177e88bb" name="mule.env"
-		value="devLocal" />
+		value="testLocal" />
 	<configuration-properties
 		doc:name="Configuration properties"
 		doc:id="f77e9b07-9df3-4f7d-8880-61de8155008a"
@@ -71,7 +71,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	</secure-properties:config>
 	<global-property doc:name="Global Property"
 		doc:id="269ef934-0eb1-465d-abd7-481430175f55" name="mule.securefile"
-		value="dev-secure" />
+		value="test-secure" />
 	<configuration-properties
 		doc:name="Configuration properties"
 		doc:id="b2b5ca5e-b2ea-45ae-a473-e96fc973a042"
@@ -90,14 +90,11 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 		<http:listener-connection host="0.0.0.0"
 			port="${http.private.port}" connectionIdleTimeout="${http.timeout}" />
 	</http:listener-config>
-	
 	<sftp:config name="SFTP_Config" doc:name="SFTP Config" doc:id="447a75f9-c863-40ea-a2d0-7039c1c49a55" >
-		<sftp:connection host="${config.sftp.host}" username="${config.sftp.username}" password="${config.sftp.password}" />
+		<sftp:connection host="${config.sftp.host}" username="${config.sftp.username}" password="${config.sftp.password}" port="${config.sftp.port}"/>
 	</sftp:config>
-	
 <!-- 	<api-gateway:autodiscovery apiId="${api.id}" -->
 <!-- 		ignoreBasePath="true" doc:name="API Autodiscovery" -->
 <!-- 		doc:id="d2b70ccd-78a6-4377-8d87-4ed9c4f2e4bc" -->
 <!-- 		flowRef="s-gr-docubase-main" /> -->
-
 </mule>

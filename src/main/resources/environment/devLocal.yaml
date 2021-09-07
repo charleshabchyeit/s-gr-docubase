@@ -25,7 +25,8 @@ config:
     protocol: "HTTPS"
     timeout: "999999999"
     username: "svc_api_docu"
-    password: "${secure::passwords.docubasePass}"
+    SoapPassword: "${secure::passwords.docubasePass}"
+    password: "${secure::passwords.password}"
     path:
       baseURI: "serviceweb/rest/api/usersession"
     endpoint: 
@@ -34,8 +35,9 @@ config:
       getTree: "/wsrheaurl/cxf/wsu?wsdl"
       patchDocument: "/basemanager/domain/1/base/GARANCE/document/1/tag"
   sftp:
-    host: "GRCSWPFIC100"
-    username: "mulesoft"
+    host: "90.85.48.77"
+    port: "2222"
+    username: "garance_salesforce_r"
     password: "${secure::passwords.sftp}"
     
 # Common properties
